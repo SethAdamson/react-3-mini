@@ -9,14 +9,11 @@ import { ToastContainer, toast } from 'react-toastify';
 class App extends Component {
   constructor( props ) {
     super( props );
-
+    console.log('contructor')
     this.state = {
       vehiclesToDisplay: [],
       buyersToDisplay: [],
-      baseUrl: 'https://joes-autos.herokuapp.com/api',
-      selectedMake: '',
-      selectedColor: '',
-      selectedYear: ''
+      baseUrl: 'https://joes-autos.herokuapp.com/api'
     };
 
     this.getVehicles = this.getVehicles.bind( this );
@@ -31,20 +28,20 @@ class App extends Component {
     this.byYear = this.byYear.bind( this );
     this.deleteBuyer = this.deleteBuyer.bind( this );
   }
-  componentDidMount(){
+  componentDidMount() {
     this.getVehicles();
-    this.getPotentialBuyers();
+    this.getPotentialBuyers()
   }
 
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
-  let promise = axios.get(this.state.baseUrl + '/vehicles')
-  promise.then((res) => {
-    this.setState({
-      vehiclesToDisplay: res.data
+    let promise = axios.get(this.state.baseUrl + '/vehicles')
+    promise.then((res) => {
+      this.setState({
+        vehiclesToDisplay: res.data
+      })
     })
-  })
   }
 
   getPotentialBuyers() {
@@ -62,7 +59,7 @@ class App extends Component {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
     let promise = axios.delete(this.state.baseUrl + '/vehicles/' + id)
-    promise.then( res => {
+    promise.then( (res) => {
       this.setState({
         vehiclesToDisplay: res.data.vehicles
       })
@@ -71,41 +68,23 @@ class App extends Component {
 
   filterByMake() {
     let make = this.refs.selectedMake.value;
-    this.setState({
-      selectedMake: make
-    })
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
-    let promise = axios.get(`${this.state.baseUrl}/vehicles?make=${make}`)
-    promise.then( res => {
-      this.setState({
-        vehiclesToDisplay: res.data
-      })
-    })
   }
 
   filterByColor() {
     let color = this.refs.selectedColor.value;
-    this.setState({
-      selectedColor: color
-    })
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
-    let promise = axios.get(`${this.state.baseUrl}/vehicles?color=${color}`)
-    promise.then( res => {
-      this.setState({
-        vehiclesToDisplay: res.data
-      })
-    })
   }
 
   updatePrice( priceChange, id ) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
     let promise = axios.put(`${this.state.baseUrl}/vehicles/${id}/${priceChange}`)
-    promise.then( res => {
+    promise.then( (res) => {
       this.setState({
         vehiclesToDisplay: res.data.vehicles
       })
@@ -123,7 +102,7 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
-    let promise = axios.post(`${this.state.baseUrl}/vehicles`, newCar)
+    let promise = axios.post(this.state.baseUrl + '/vehicles', newCar)
     promise.then( res => {
       this.setState({
         vehiclesToDisplay: res.data.vehicles
@@ -140,24 +119,11 @@ class App extends Component {
 
     //axios (POST)
     // setState with response -> buyersToDisplay
-    let promise = axios.post(`${this.state.baseUrl}/buyers`, newBuyer)
-    promise.then( res => {
-      this.setState({
-        buyersToDisplay: res.data.buyers
-      })
-    })
   }
 
   deleteBuyer( id ) {
     // axios (DELETE)
     //setState with response -> buyersToDisplay
-    let promise = axios.delete(this.state.baseUrl + '/buyers/' + id)
-    promise.then( res => {
-      // console.log(res)
-      this.setState({
-        buyersToDisplay: res.data.buyers
-      })
-    })
   }
 
   nameSearch() {
@@ -165,30 +131,13 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> buyersToDisplay
-    let promise = axios.get(`${this.state.baseUrl}/buyers?name=${searchLetters}`)
-    promise.then( res => {
-      this.setState({
-        buyersToDisplay: res.data
-      })
-    })
   }
 
   byYear() {
     let year = this.refs.searchYear.value;
-    console.log(year)
-    this.setState({
-      selectedYear: year
-    })
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
-    let promise = axios.get(`${this.state.baseUrl}/vehicles?year=${year}`)
-    promise.then( res => {
-      console.log(res)
-      this.setState({
-        vehiclesToDisplay: res.data
-      })
-    })
   }
 
   // Do not edit the code below
@@ -204,6 +153,7 @@ class App extends Component {
   // Do not edit the code above
 
   render() {
+    console.log('render')
     const vehicles = this.state.vehiclesToDisplay.map( v => {
       return (
         <div key={ v.id }>
@@ -277,7 +227,7 @@ class App extends Component {
           <select onChange={ this.filterByMake }
                   ref='selectedMake'
                   className='btn-sp'
-                  value = {this.state.selectedMake}>
+                  value="">
             <option value="" disabled>Filter by make</option>
             <option value="Suzuki">Suzuki</option>
             <option value="GMC">GMC</option>
@@ -293,7 +243,7 @@ class App extends Component {
           <select ref='selectedColor'
                   onChange={ this.filterByColor }
                   className='btn-sp'
-                  value={this.state.selectedColor}>
+                  value="">
             <option value="" disabled>Filter by color</option>
             <option value="red">Red</option>
             <option value="green">Green</option>
